@@ -9,8 +9,10 @@ from os.path import join, exists
 
 from logging import Logger
 
+from mutations import MutationProcessor
+
 class MixInDataset(object):
-    
+
     def __init__(self, root: str, mixing : str, to_mix_with : str, logger : Logger = None):
 
         if not all([root, mixing, to_mix_with]):
@@ -31,6 +33,8 @@ class MixInDataset(object):
         self.__mixing : List[Image] = list()
         self.__to_mix_with : List[Image] = list()
         self.__logger : Logger = logger
+        self.__mixing_mutations : List[MutationProcessor] = list()
+        self.__to_mix_with_mutations : List[MutationProcessor] = list()
 
         for path, _, files in walk(root):
             if path == mixing_path:
@@ -47,20 +51,34 @@ class MixInDataset(object):
             mixing_idx = randint(0, len(self.__mixing)-1)
 
             for _ in range(to_mix_with_samples):
+
                 to_mix_with_idx = randint(0, len(self.__to_mix_with)-1)
-                to_mix_with_copied_image = self.__to_mix_with[to_mix_with_idx].copy()
-                mixing_copied_image : Image = self.__mixing[mixing_idx].copy()
                 
                 if self.__logger:
                     self.__logger.debug(f"Mixing '{self.__mixing[mixing_idx].filename}' with '{self.__to_mix_with[to_mix_with_idx].filename}'")
+                
+                to_mix_with_copied_image : Image = self.__to_mix_with[to_mix_with_idx]
+                mixing_copied_image : Image = self.__mixing[mixing_idx]
 
-                (w, h) = mixing_copied_image.size
+                for mut in self.__to_mix_with_mutations:
+                    to_mix_with_copied_image = mut.mutate(to_mix_with_copied_image)
 
-                to_mix_with_resized = to_mix_with_copied_image.resize((int(w/2),int(h/2)))
-                mixing_copied_image.paste(to_mix_with_resized, (to_mix_with_idx*10, to_mix_with_idx*10))
+                for mut in self.__mixing_mutations:
+                    mixing_copied_image = mut.mutate(mixing_copied_image)
+
+                mixing_copied_image.paste(to_mix_with_copied_image, (150, 150))
                 mixed.append(mixing_copied_image)
         
         return mixed
+
+
+    def add_mutation_mixing(self, mutation_processor : MutationProcessor) -> 'MixInDataset':
+        self.__mixing_mutations.append(mutation_processor)
+        return self
+
+    def add_mutation_to_mix_with(self, mutation_processor : MutationProcessor) -> 'MixInDataset':
+        self.__to_mix_with_mutations.append(mutation_processor)
+        return self
 
     def __str__(self) -> str:
         return f'''
@@ -71,14 +89,22 @@ class MixInDataset(object):
 if __name__ == "__main__":
     from sys import stdout
     from logging import StreamHandler, getLogger, DEBUG
+
+    from mutations import ResizeMutation
     
+    # logging routine, don't mind
     handler = StreamHandler(stdout)
     rootLogger = getLogger()
     rootLogger.addHandler(handler)
     rootLogger.setLevel(DEBUG)
+    # ---------------------------
 
     dataset = MixInDataset('dummy-data', 'landscapes', 'figures', rootLogger)
     print(dataset)
+
+    dataset \
+        .add_mutation_to_mix_with(ResizeMutation((128, 128))) \
+        .add_mutation_mixing(ResizeMutation((400, 400)))
 
     for idx, img in enumerate(dataset.mix(4,1)):
         img.save(f'output/{idx}.png', format='png')
