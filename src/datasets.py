@@ -52,7 +52,7 @@ class MixInDataset(object):
                 mixing_copied_image : Image = self.__mixing[mixing_idx].copy()
                 
                 if self.__logger:
-                    self.__logger.info(f"Mixing '{self.__mixing[mixing_idx].filename}' with '{self.__to_mix_with[to_mix_with_idx].filename}'")
+                    self.__logger.debug(f"Mixing '{self.__mixing[mixing_idx].filename}' with '{self.__to_mix_with[to_mix_with_idx].filename}'")
 
                 (w, h) = mixing_copied_image.size
 
@@ -70,12 +70,12 @@ class MixInDataset(object):
     
 if __name__ == "__main__":
     from sys import stdout
-    from logging import StreamHandler, getLogger, INFO
+    from logging import StreamHandler, getLogger, DEBUG
     
     handler = StreamHandler(stdout)
     rootLogger = getLogger()
     rootLogger.addHandler(handler)
-    rootLogger.setLevel(INFO)
+    rootLogger.setLevel(DEBUG)
 
     dataset = MixInDataset('dummy-data', 'landscapes', 'figures', rootLogger)
     print(dataset)
