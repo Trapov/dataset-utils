@@ -1,20 +1,20 @@
-# dataset-utils
-
-A simple util to make your dataset flexable.
-
-# Requirements
-- Python >3.6
-- pillow 6.1.0
-
-# How to
-
-```python
+if __name__ == "__main__":
+    from sys import stdout
+    from logging import StreamHandler, getLogger, DEBUG
 
     from datasetutils.datasets import MixInDataset
     from datasetutils.mutations import ResizeMutation
     from datasetutils.pasting import LeftCornerPaddingRule, RandomPaddingRule
+    
+    # logging routine, don't mind
+    handler = StreamHandler(stdout)
+    rootLogger = getLogger()
+    rootLogger.addHandler(handler)
+    rootLogger.setLevel(DEBUG)
+    # ---------------------------
 
     dataset = MixInDataset('dummy-data', 'landscapes', 'figures', rootLogger)
+    print(dataset)
 
     dataset \
         .add_mutation_to_mix_with(ResizeMutation((128, 128))) \
@@ -23,9 +23,4 @@ A simple util to make your dataset flexable.
 
     for idx, img in enumerate(dataset.mix(4,1)):
         img.save(f'output/{idx}.png', format='png')
-
-```
-
-will yield to result in the `output` directory:
-
-![output.png](output/0.png)
+        # img.show('s')
