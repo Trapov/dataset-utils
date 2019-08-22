@@ -2,6 +2,9 @@
 
 A simple util to make your dataset flexable.
 
+# Builds
+[![Build Status](https://travis-ci.com/Trapov/dataset-utils.svg?branch=master)](https://travis-ci.com/Trapov/dataset-utils)
+
 # Requirements
 - Python >3.6
 - pillow 6.1.0

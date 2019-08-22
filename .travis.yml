@@ -2,9 +2,13 @@ dist: xenial
 language: python
 
 jobs:
-  deploy:
-    provider: pypi
-    user: $USER_NAME
-    password: $PASS
-    on:
+  fast_finish: true
+  include:
+    stage: deploy (to PyPI for tagged commits)
+    if: tag IS present
+    install: pip install twine
+    script:
+      - python3 setup.py sdist bdist_wheel
+      - twine upload -u $USER_NAME -p $PASS dist/*
+    on
       tags: true

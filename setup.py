@@ -7,7 +7,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setuptools.setup(
      name='datasetutils',  
-     version='0.1.0',
+     version='0.1.1',
      author="Dmitry Afonin",
      author_email="raysofgoodness@gmail.com",
      description="A simple util to make your dataset flexable.",
