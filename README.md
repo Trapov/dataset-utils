@@ -17,7 +17,7 @@ from datasetutils.mutations import ResizeMutation
 from datasetutils.pasting import LeftCornerPastingRule, RandomPastingRule
 
 dataset = \
-    MixInDataset(root='dummy-data', mixing='landscapes',to_mix_with='figures', logger=rootLogger) \
+    MixInDataset(root='dummy-data', mixing='landscapes',to_mix_with='figures') \
         .add_mutation_mixing(ResizeMutation((250, 250))) \
         .add_mutation_to_mix_with(ResizeMutation((128, 128))) \
         .paste_as(RandomPastingRule(250))
