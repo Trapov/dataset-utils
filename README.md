@@ -32,4 +32,4 @@ for idx, (image, box) in enumerate(dataset.mix(2,2)):
 
 will yield to result in the `output` directory:
 
-![output.png](output/0.png) ![output.png](output/1.png) ![output.png](output/2.png)
+![output.png](output/3.png) ![output.png](output/1.png) ![output.png](output/0.png)
