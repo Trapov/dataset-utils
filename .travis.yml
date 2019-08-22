@@ -1,4 +1,10 @@
-deploy:
-  provider: pypi
-  user: $USER_NAME
-  password: $PASS
+dist: xenial
+language: python
+
+jobs:
+  deploy:
+    provider: pypi
+    user: $USER_NAME
+    password: $PASS
+    on:
+      tags: true
