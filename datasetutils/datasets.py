@@ -91,8 +91,8 @@ class MixInDataset(object):
 
                 to_mix_with_idx = randint(0, len(self.__to_mix_with)-1)
                 
-                to_mix_with_copied_image : Image = self.__to_mix_with[to_mix_with_idx]
-                mixing_copied_image : Image = self.__mixing[mixing_idx]
+                to_mix_with_copied_image : Image = self.__to_mix_with[to_mix_with_idx].copy()
+                mixing_copied_image : Image = self.__mixing[mixing_idx].copy()
 
                 for mut in self.__to_mix_with_mutations:
                     to_mix_with_copied_image = mut.mutate(to_mix_with_copied_image)
