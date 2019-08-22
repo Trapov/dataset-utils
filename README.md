@@ -6,6 +6,14 @@ A simple util to make your dataset flexable.
 - Python >3.6
 - pillow 6.1.0
 
+# Installation
+
+[![PyPI version](https://badge.fury.io/py/datasetutils.svg)](https://badge.fury.io/py/datasetutils)
+
+```bash 
+pip install datasetutils==0.1.0
+```
+
 # How to
 
 ```python
