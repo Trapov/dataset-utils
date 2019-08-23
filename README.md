@@ -14,7 +14,7 @@ A simple util to make your dataset flexable.
 [![PyPI version](https://badge.fury.io/py/datasetutils.svg)](https://badge.fury.io/py/datasetutils)
 
 ```bash 
-pip install datasetutils==0.1.0
+pip install datasetutils==0.1.1
 ```
 
 # How to
